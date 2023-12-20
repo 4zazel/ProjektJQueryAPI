@@ -6,17 +6,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <script type="text/javascript">
-        fetch("https://meowfacts.herokuapp.com/")
-    .then(res => {
-        console.log(res);
-    })
-
-    console.log(res)
-    </script>
     
+    <script type="text/javascript">
+        
+        function getPrices(){
+
+        document.getElementById("priceCheck").innerHTML = "";
+        
+        var price = 0;
+        price = document.getElementById("priceIn").value; 
+
+        if(price == 0 || price == null)
+        {
+            document.getElementById("priceCheck").innerHTML = "Please enter a price!";
+        }
+
+        console.log("fack");
+
+        fetch("https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice="+price)
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            } else {
+                return Promise.reject(`Http error: ${res.status}`);
+            }
+        })
+        .then(res => {
+            console.log(res[0])
+            for(var i = 1; i<11; i++)
+            {
+                console.log(res[i]["title"]);
+                console.log("r"+i)
+                document.getElementById("p"+i).innerHTML = "Normal price: "+res[i]["normalPrice"] + "$ | Sale price: " + res[i]["salePrice"] + "$";
+                document.getElementById("r"+i).innerHTML = "<img src='"+res[i]["thumb"]+"'>";
+                document.getElementById("k"+i).innerHTML = res[i]["title"] + "   - Steam rating: "+res[i]["steamRatingText"];
+            }
+        })
+        .catch(error => {
+            console.error(error)
+
+        });
+    }
+    </script>
+
+    <h1>Steam games price checker</h1>
+
+    <h2 id="priceCheck"></h2>
+
+    <label>Enter the price: </label>
+    <input type="number" id=priceIn>
+
+    <button type="submit" onclick="getPrices()">Submit</button>
+
+   
+
+<div id="games">
+    <p name="test" id="k1"></p>
+    <p name="test" id="p1"></p>
+    <p name="test" id="r1"></p><br>
+    <p name="test" id="k2"></p>
+    <p name="test" id="p2"></p>
+    <p name="test" id="r2"></p><br>
+    <p name="test" id="k3"></p>
+    <p name="test" id="p3"></p>
+    <p name="test" id="r3"></p><br>
+    <p name="test" id="k4"></p>
+    <p name="test" id="p4"></p>
+    <p name="test" id="r4"></p><br>
+    <p name="test" id="k5"></p>
+    <p name="test" id="p5"></p>
+    <p name="test" id="r5"></p><br>
+    <p name="test" id="k6"></p>
+    <p name="test" id="p6"></p>
+    <p name="test" id="r6"></p><br>
+    <p name="test" id="k7"></p>
+    <p name="test" id="p7"></p>
+    <p name="test" id="r7"></p><br>
+    <p name="test" id="k8"></p>
+    <p name="test" id="p8"></p>
+    <p name="test" id="r8"></p><br>
+    <p name="test" id="k9"></p>
+    <p name="test" id="p9"></p>
+    <p name="test" id="r9"></p><br>
+    <p name="test" id="k10"></p>
+    <p name="test" id="p10"></p>
+    <p name="test" id="r10"></p>
+</div>
+
+
 </body>
 </html>
