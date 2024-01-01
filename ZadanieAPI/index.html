@@ -1,55 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Ustawienia strony i kodowania znakow -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello</title>
+    <!-- Dołaczenie jquery do projektu -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    <!-- dolaczenie biblioteki bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body>
+    <!-- dolaczenie biblioteki bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Funckja ktora pobiera ze strony gry z maksymalna cena ktora zostala wpisana przez uzytkownika -->
     <script type="text/javascript">
         
         function getPrices(){
 
-        document.getElementById("priceCheck").innerHTML = "";
-        
-        var price = 0;
-        price = document.getElementById("priceIn").value; 
 
-        if(price == 0 || price == null)
-        {
-            document.getElementById("priceCheck").innerHTML = "Please enter a price!";
-        }
+            document.getElementById("priceCheck").innerHTML = "";
+            
+            var price = 0;
 
-        console.log("fack");
+            //pobranie ceny od uzytkownika
+            price = document.getElementById("priceIn").value; 
 
-        fetch("https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice="+price)
-        .then(res => {
-            if (res.ok) {
-                return res.json()
-            } else {
-                return Promise.reject(`Http error: ${res.status}`);
-            }
-        })
-        .then(res => {
-            console.log(res[0])
-            for(var i = 1; i<11; i++)
+            //sprawdzanie czy dane wprowadzone przez uzytkownika sa poprawne
+            if(price == 0 || price == null)
             {
-                console.log(res[i]["title"]);
-                console.log("r"+i)
-                document.getElementById("p"+i).innerHTML = "Normal price: "+res[i]["normalPrice"] + "$ | Sale price: " + res[i]["salePrice"] + "$";
-                document.getElementById("r"+i).innerHTML = "<img src='"+res[i]["thumb"]+"'>";
-                document.getElementById("k"+i).innerHTML = res[i]["title"] + "   - Steam rating: "+res[i]["steamRatingText"];
+                document.getElementById("priceCheck").innerHTML = "Please enter a price!";
             }
-        })
-        .catch(error => {
-            console.error(error)
 
-        });
-    }
+            //pobranie danych ze strony
+            fetch("https://www.cheapshark.com/api/1.0/deals?storeID=1&upperPrice="+price)
+            .then(res => {
+                if (res.ok) {
+                    return res.json()
+                } else {
+                    return Promise.reject(`Http error: ${res.status}`);
+                }
+            })
+            .then(res => {
+                //Wyswietlenie danych pobranych ze strony
+                for(var i = 1; i<11; i++)
+                {
+                    console.log(res[i]["title"]);
+                    console.log("r"+i)
+                    document.getElementById("p"+i).innerHTML = "Normal price: "+res[i]["normalPrice"] + "$ | Sale price: " + res[i]["salePrice"] + "$";
+                    document.getElementById("r"+i).innerHTML = "<img src='"+res[i]["thumb"]+"'>";
+                    document.getElementById("k"+i).innerHTML = res[i]["title"] + "   - Steam rating: "+res[i]["steamRatingText"];
+                }
+            })
+            //exception handling
+            .catch(error => {
+                console.error(error)
+
+            });
+        }
     </script>
 
     <h1>Steam games price checker</h1>
@@ -63,7 +74,7 @@
 
    
 
-<div id="games">
+<div class="row" id="games">
     <p name="test" id="k1"></p>
     <p name="test" id="p1"></p>
     <p name="test" id="r1"></p><br>
